@@ -17,7 +17,7 @@ const WAKATIME_URL_FMT: String = \
 	"https://github.com/wakatime/wakatime-cli/releases/download/v2.26.0/{wakatime_build}.zip"
 
 # Names for menu
-const API_MENU_ITEM: String = "Wakatime API key"
+const API_MENU_ITEM: String = "9165baaf-e750-4eac-bea9-a2e3d1b667d0"
 const CONFIG_MENU_ITEM: String = "Wakatime Config File"
 
 # Directories to grab wakatime from
