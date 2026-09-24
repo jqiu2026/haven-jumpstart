@@ -13,7 +13,4 @@
 - **Move Right:** `D` or `Right Arrow`
 - **Jump:** `W`, `Space`, or `Up Arrow`
 
-## Run the game
-
-1. Open the project in **Godot 4**.
-2. Launch the main scene from the editor.
+## Run the game on itch.io
