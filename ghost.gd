@@ -17,6 +17,7 @@ var is_screeching: bool = false
 
 var camera: Camera2D = null
 var red_overlay: ColorRect = null
+var game_over_label: Label = null
 
 func _ready() -> void:
 	if has_node("%Player"):
@@ -29,6 +30,9 @@ func _ready() -> void:
 		print("Ghost connected to the Red Overlay successfully!")
 	else:
 		print("Ghost Warning: Could not find %RedOverlay in this scene tree layout.")
+
+	if has_node("%GameOverLabel"):
+		game_over_label = get_node("%GameOverLabel") as Label
 
 	if screech_sfx.stream:
 		half_duration = screech_sfx.stream.get_length() / 2.0
@@ -48,7 +52,8 @@ func _process(delta: float) -> void:
 		# Standard Chase Movement
 		if distance > 5.0:
 			var direction = target_vector.normalized()
-			global_position += direction * speed * delta
+			var move = Vector2(direction.x * speed, direction.y * speed * 0.3) # slower to change vertically
+			global_position += move * delta
 			animated_sprite.flip_h = direction.x > 0
 		
 		# Distance and Audio Layering Checks
@@ -111,10 +116,13 @@ func _on_kill_zone_body_entered(body: Node2D) -> void:
 	if is_lethal and body.is_in_group("Player"):
 		print("Player caught! Triggering Game Over...")
 
-		if has_node("%GameOverLabel"):
-			var game_over_text = get_node("%GameOverLabel") as Label
-			game_over_text.visible = true
+		if game_over_label:
+			game_over_label.visible = true
 		else:
 			print("CRITICAL GAME OVER - Player has been eliminated!")
 
+		get_tree().current_scene.stop_all_audio()
 		get_tree().paused = true
+		await get_tree().create_timer(2.0, true).timeout
+		get_tree().paused = false
+		get_tree().reload_current_scene()
